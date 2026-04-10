@@ -1,6 +1,6 @@
-# __PROJECT_NAME__
+# CppAILearn
 
-__PROJECT_DESCRIPTION__
+learning path to AI hacker
 
 ## Что предоставляет этот шаблон
 
@@ -49,7 +49,7 @@ cd my-project
 ./setup.sh MyProjectName "Описание проекта"
 ```
 
-Скрипт заменит все плейсхолдеры (`__PROJECT_NAME__`, `__PROJECT_DESCRIPTION__`, `__AUTHOR_NAME__`) на реальные значения, сделает начальный коммит и удалит себя.
+Скрипт заменит все плейсхолдеры (`CppAILearn`, `learning path to AI hacker`, `Vyacheslav Tilikov`) на реальные значения, сделает начальный коммит и удалит себя.
 
 ### 3. Инициализировать сборку
 

@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 4.0)
 set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
 set(PROJECT_VERSION 0.0.${PATCH_VERSION})
 
-project(__PROJECT_NAME__ VERSION 0.0.${PATCH_VERSION})
+project(CppAILearn VERSION 0.0.${PATCH_VERSION})
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     # -g: symbols для профайлера
