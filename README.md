@@ -1,19 +1,15 @@
-# CppAILearn
+# cpp-ai-learn
 
-learning path to AI hacker
+Учебный C++ проект по роадмапу "AI + C++ Research" — путь от основ C++ до кастомных CUDA-кернелов и PyTorch C++ extensions.
 
-## Что предоставляет этот шаблон
+## Стек
 
-- **Мульти-проектная структура** — каждый подпроект в `src/<name>/` со своим `CMakeLists.txt`, автоматически подхватывается при сборке
 - **C++23** + Clang (Homebrew LLVM) + Ninja
-- **Google Test** — подключён через FetchContent, готов к использованию в каждом подпроекте
-- **Google Benchmark** — подключён через FetchContent для микробенчмарков
-- **AddressSanitizer + UBSan** — включены по умолчанию в Debug-сборке
-- **clang-format + clangd + clang-tidy** — настроены, `compile_commands.json` генерируется автоматически
-- **Makefile** — удобные команды для сборки, тестов, бенчмарков, создания новых подпроектов
-- **Папка `libs/`** — для общих библиотек, используемых несколькими подпроектами
-- **Папка `datasets/`** — для датасетов (CSV, текстовые файлы и т.д.)
-- **Папка `scripts/`** — для вспомогательных скриптов (sanity checks, визуализация и т.д.)
+- **Google Test** и **Google Benchmark** через FetchContent
+- **AddressSanitizer + UBSan** включены в Debug
+- **clang-format + clangd + clang-tidy** настроены, `compile_commands.json` генерируется автоматически
+- Мульти-проектная структура: каждый подпроект в `src/<name>/` со своим `CMakeLists.txt`
+
 ## Требования
 
 ```bash
@@ -22,7 +18,11 @@ brew install cmake ninja llvm
 
 # Опционально
 brew install gnuplot            # визуализация из C++
-pip3 install numpy scikit-learn # sanity checks для ML-проектов
+
+# Python-окружение для sanity check ML-проектов (pip вне venv заблокирован на macOS)
+python3 -m venv .venv
+source .venv/bin/activate
+pip install numpy scikit-learn
 ```
 
 | Зависимость | Минимальная версия | Назначение |
@@ -32,38 +32,14 @@ pip3 install numpy scikit-learn # sanity checks для ML-проектов
 | LLVM/Clang | 17+ | Компилятор (C++23, sanitizers) |
 | gnuplot | любая | Визуализация (опционально) |
 
-## Первичная инициализация
-
-### 1. Создать репозиторий из шаблона
-
-Нажми **"Use this template"** на GitHub, или:
+## Быстрый старт
 
 ```bash
-git clone <url> my-project
-cd my-project
-```
-
-### 2. Настроить имя проекта
-
-```bash
-./setup.sh MyProjectName "Описание проекта"
-```
-
-Скрипт заменит все плейсхолдеры (`CppAILearn`, `learning path to AI hacker`, `Vyacheslav Tilikov`) на реальные значения, сделает начальный коммит и удалит себя.
-
-### 3. Инициализировать сборку
-
-```bash
-make setup  # проверить что все зависимости установлены
-make init   # сгенерировать CMake + compile_commands.json
-```
-
-### 4. Собрать и запустить
-
-```bash
+make setup              # проверить что все зависимости установлены
+make init               # сгенерировать CMake + compile_commands.json
 make build              # собрать всё
 make test               # запустить тесты
-make run TARGET=hello_world # собрать и запустить одну цель
+make run TARGET=hello_world  # собрать и запустить одну цель
 ```
 
 ## Команды Makefile
@@ -99,8 +75,7 @@ make run TARGET=hello_world # собрать и запустить одну це
 ```
 .
 ├── CMakeLists.txt              # Корневой CMake (зависимости, настройки компиляции)
-├── Makefile                     # Удобные команды
-├── setup.sh                    # Инициализация из шаблона (удаляется после запуска)
+├── Makefile                    # Удобные команды
 ├── cmake/
 │   └── ProjectWarnings.cmake   # Флаги предупреждений
 ├── libs/                       # Общие библиотеки между подпроектами
@@ -144,4 +119,3 @@ make new TARGET=my_app
 | `ENABLE_UBSAN` | `OFF` | UndefinedBehaviorSanitizer (включается через Makefile) |
 | `ENABLE_NATIVE_ARCH` | `ON` | Оптимизация под Apple Silicon |
 | `WITH_BENCHMARK` | `ON` | Подключить Google Benchmark |
-
