@@ -16,10 +16,10 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-// IWYU pragma: end_exports
 
 #define PPP_EXPORT
 #include "PPP_support.h"
+// IWYU pragma: end_exports
 
 using namespace std;
 using namespace PPP;
