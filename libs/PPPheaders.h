@@ -21,7 +21,6 @@
 #include "PPP_support.h"
 // IWYU pragma: end_exports
 
-using namespace std;
 using namespace PPP;
 
 // disgusting macro hack to get a range checking:
