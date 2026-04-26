@@ -1,6 +1,6 @@
 # cpp-ai-learn
 
-Учебный C++ проект по роадмапу "AI + C++ Research" — путь от основ C++ до кастомных CUDA-кернелов и PyTorch C++ extensions.
+Учебный C++ проект: алгоритмические задачи, STL-практика, маленькие программы по языку. Используется как площадка для C++ track при подготовке к ШАД Яндекса (https://shad.yandex.ru/enroll). Make/CMake-структура универсальна — подойдёт как шаблон для любых C++ упражнений с тестами и санитайзерами из коробки.
 
 ## Стек
 
@@ -119,3 +119,62 @@ make new TARGET=my_app
 | `ENABLE_UBSAN` | `OFF` | UndefinedBehaviorSanitizer (включается через Makefile) |
 | `ENABLE_NATIVE_ARCH` | `ON` | Оптимизация под Apple Silicon |
 | `WITH_BENCHMARK` | `ON` | Подключить Google Benchmark |
+
+## Учебный workflow и roadmap
+
+Подготовка ведётся по детальному ШАД-роадмепу в Obsidian (vault лежит вне этого репо). Для синхронизации роадмепа с daily/weekly заметками подключён subagent `shad-planner` — описание в [.claude/agents/shad-planner.md](.claude/agents/shad-planner.md). Конкретные пути к vault'у и шаблоны daily/weekly хранятся там же и в [CLAUDE.md](CLAUDE.md), а не в публичной части репо.
+
+### Триггеры в Claude Code
+
+| Фраза | Режим | Что делает |
+|---|---|---|
+| `daily по ШАД`, `план на сегодня`, `следующая задача`, `что дальше по плану` | `daily` | Находит первый день с незакрытыми задачами в активном плане фазы, создаёт daily-заметку и вставляет задачи дня. Делает sync-back: чекбоксы, закрытые в последней daily, проставляются в основном плане. |
+| `weekly по ШАД`, `план на неделю`, `обзор недели` | `weekly` | Создаёт weekly-заметку для текущей ISO-недели с целью и результатом из роадмепа, статусом дней и dataview-блоком статистики. |
+| `детализируй фазу`, `начнём фазу N` | `phase-detail` | По высокоуровневой фазе (`0N - Phase N - <название>.md`) генерирует детальный план по дням (`NNa - Phase N - Детальный план по дням.md`) в стиле Phase 1. |
+| `где я по ШАД`, `статус`, `прогресс` | `status` | Показывает активную фазу, неделю, следующий день, последние daily/weekly, проседающие темы из Topic Map. |
+
+### Источник правды
+
+Прогресс по плану — чекбоксы `- [ ]` / `- [x]` в файле `NNa - Phase N - Детальный план по дням.md` активной фазы. Отдельной БД нет; sync-back подтягивает закрытые задачи из daily в этот файл.
+
+### Метрики daily
+
+Frontmatter daily-заметок:
+
+- Обязательные: `shad_hours`, `shad_math_tasks`, `shad_algo_tasks`, `cpp_hours`.
+- Опциональные: `shad_probe_minutes`, `shad_error_log`, `shad_explain`.
+
+`cpp_hours` — это время на C++ как язык/toolchain/конспекты, в том числе работа в этом репо. `shad_algo_tasks` — алгоритмические задачи, в том числе решённые здесь.
+
+### Адаптация под другой роадмеп
+
+Структура агента не привязана к ШАДу: достаточно поменять пути и набор полей frontmatter в [.claude/agents/shad-planner.md](.claude/agents/shad-planner.md), формат заголовков дней/недель оставить тем же — `## День N - тема` / `# Неделя N - название`.
+
+## Applied project: Mini-Database
+
+Помимо контестных задач, в этом репо живёт небольшой applied — учебная Mini-DB на современном C++ по образцу [cstack/Let's Build a Simple Database](https://cstack.github.io/db_tutorial/), переписанному с C на C++17/20/23. Цель — учить язык на осмысленном проекте, а не только на россыпи LeetCode-задач.
+
+Подпроект создаётся через `make new TARGET=mini_db` (Phase 1, неделя 1).
+
+### Скоп
+
+Vertical slice: REPL → парсер минимального SQL (`INSERT`, `SELECT`) → in-memory table → file persistence → pager → B-tree primary key. Без transactions, recovery, multi-user, optimizer, JOIN.
+
+### Темп
+
+| Фаза подготовки | Объём applied | Что делается |
+|---|---|---|
+| Phase 1 (нед. 1-8) | ~30 мин/нед, по воскресеньям | warm-up: in-memory KV REPL с file save/load, готовая стартовая точка |
+| Phase 2 (нед. 9-20) | 1.5-2 ч/нед | основная работа по cstack parts 1-13 |
+| Phase 3 (нед. 21-32) | ~1 ч/нед | полировка: применение тем Phase 3 (structs, comparators, профилирование) |
+| Phase 4-5 (нед. 33-52) | пауза | всё время — пробники и ремонт перед экзаменом |
+
+### Правило приоритета
+
+Applied — мотивационный довесок, не самостоятельный трек. **Отрезается первым** при просадке по математике или алгоритмам. Если хочется углубиться (transactions, B+tree internals, query planner) — это сигнал стоп: drift в инженерную тему уведёт от подготовки. Углубление — после поступления через CMU 15-445 + BusTub.
+
+### После Mini-DB
+
+Если cstack пройден до конца Phase 2 без задержек, в Phase 3 на свободные часы — **не** углубляться в Mini-DB, а взять короткий альтернативный applied (8-15 ч): mini-interpreter (Crafting Interpreters), parser combinators, mini ray tracer, self-balancing dictionary. Список — в `09 - C++ Track.md` (Obsidian vault, не в этом репо).
+
+Подробный план по неделям и темам C++, которые закрывает каждый этап applied, — в C++ Track роадмепа.
