@@ -41,3 +41,51 @@ TEST(roadmap_problems, PrefixSumKeepsPreparedDataAfterInputChanges) {
 
     EXPECT_EQ(range_sum(0, 3), 6);
 }
+
+TEST(roadmap_problems, NumberCounterReturnsFrequencies) {
+    const std::vector<int> values{1, 2, 1, 3, 2, 1};
+
+    const auto count = roadmap_problems::make_number_counter(values);
+
+    EXPECT_EQ(count(1), 3);
+    EXPECT_EQ(count(2), 2);
+    EXPECT_EQ(count(3), 1);
+}
+
+TEST(roadmap_problems, NumberCounterReturnsZeroForMissingValues) {
+    const std::vector<int> values{4, 4, 5};
+
+    const auto count = roadmap_problems::make_number_counter(values);
+
+    EXPECT_EQ(count(1), 0);
+    EXPECT_EQ(count(6), 0);
+}
+
+TEST(roadmap_problems, NumberCounterSupportsNegativeValues) {
+    const std::vector<int> values{-1, 0, -1, -2, -2, -2};
+
+    const auto count = roadmap_problems::make_number_counter(values);
+
+    EXPECT_EQ(count(-1), 2);
+    EXPECT_EQ(count(0), 1);
+    EXPECT_EQ(count(-2), 3);
+}
+
+TEST(roadmap_problems, NumberCounterSupportsEmptyInput) {
+    const std::vector<int> values{};
+
+    const auto count = roadmap_problems::make_number_counter(values);
+
+    EXPECT_EQ(count(0), 0);
+    EXPECT_EQ(count(42), 0);
+}
+
+TEST(roadmap_problems, NumberCounterKeepsPreparedDataAfterInputChanges) {
+    std::vector<int> values{7, 8, 7};
+
+    const auto count = roadmap_problems::make_number_counter(values);
+    values[0] = 8;
+
+    EXPECT_EQ(count(7), 2);
+    EXPECT_EQ(count(8), 1);
+}

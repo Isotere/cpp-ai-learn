@@ -1,7 +1,9 @@
 #pragma once
 
+#include <algorithm>
 #include <cassert>
 #include <cstddef>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -30,6 +32,31 @@ inline auto make_prefix_sum(const std::vector<int>& input) {
         assert(l <= r && r < pref.size());
 
         return pref[r] - pref[l];
+    };
+}
+
+// Задача из roadmap, День 4: построить счетчик частот чисел.
+//
+// Для входного массива `input` строим `unordered_map`, где ключ — число из
+// массива, а значение — сколько раз оно встретилось.
+//
+// Возвращаемая лямбда работает как count(needle): за O(1) в среднем отвечает,
+// сколько раз `needle` встречается во входном массиве. Если числа нет, результат
+// равен 0. Подготовка занимает O(n) времени и O(k) памяти, где k — количество
+// различных чисел.
+inline auto make_number_counter(const std::vector<int>& input) {
+    std::unordered_map<int, std::size_t> stor{};
+
+    std::ranges::for_each(input, [&stor](int val) { ++stor[val]; });
+
+    return [stor = std::move(stor)](int needle) {
+        auto it = stor.find(needle);
+
+        if (it == stor.end()) {
+            return static_cast<std::size_t>(0);
+        }
+
+        return it->second;
     };
 }
 
