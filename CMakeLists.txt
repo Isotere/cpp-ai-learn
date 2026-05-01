@@ -117,6 +117,8 @@ if(WITH_BENCHMARK)
     FetchContent_MakeAvailable(googlebenchmark)
 endif()
 
+include(cmake/ProjectTargets.cmake)
+
 enable_testing()
 
 # === Подпроекты ===
