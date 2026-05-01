@@ -34,6 +34,7 @@ Constraints:
 
 #include "leetcode.h"
 
+// O(n) speed O(1) memory
 int leetcode::pr0136::single_number(std::vector<int>& nums) {
     // XOR удобен здесь из-за свойств:
     //   x ^ x == 0
